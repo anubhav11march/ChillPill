@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:elevation="0dp"
+    android:layout_height="match_parent"
+    tools:context=".LoginActivity">
+
+    <ImageView
+        android:id="@+id/image_view"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/main"
+        android:elevation="0dp"
+        android:paddingTop="50dp"
+        android:contentDescription="@string/description" />
+
+    <LinearLayout
+        android:id="@+id/ll1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/image_view"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="30dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/call"
+            android:contentDescription="@string/description" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/phone"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:textColorHint="@color/hint_color"
+            app:boxBackgroundMode="outline"
+            app:boxCollapsedPaddingTop="2dp"
+            app:boxCornerRadiusBottomEnd="15dp"
+            app:boxCornerRadiusBottomStart="15dp"
+            app:boxCornerRadiusTopEnd="15dp"
+            app:boxCornerRadiusTopStart="15dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hapticFeedbackEnabled="true"
+                android:hint="@string/phone_number"
+                android:inputType="phone"
+                android:paddingStart="15dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:textSize="20dp"
+                tools:ignore="RtlSymmetry,SpUsage" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll1"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        tools:ignore="NotSibling">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/otp"
+            android:contentDescription="@string/description" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/otp"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:hint="@string/enter_otp"
+            android:inputType="number"
+            android:textColorHint="@color/hint_color"
+            app:boxBackgroundMode="outline"
+            app:boxCollapsedPaddingTop="2dp"
+            app:boxCornerRadiusBottomEnd="15dp"
+            app:boxCornerRadiusBottomStart="15dp"
+            app:boxCornerRadiusTopEnd="15dp"
+            app:boxCornerRadiusTopStart="15dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hapticFeedbackEnabled="true"
+                android:inputType="number"
+                android:paddingStart="15dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:textSize="20dp"
+                tools:ignore="RtlSymmetry,SpUsage" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/heart"
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:layout_below="@+id/ll2"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="-20dp"
+        android:layout_marginBottom="-20dp"
+        android:visibility="invisible"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/heart" />
+
+    <Button
+        android:id="@+id/login_btn"
+        android:layout_width="200dp"
+        android:layout_height="60dp"
+        android:layout_below="@+id/heart"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        android:background="@drawable/save_now_bg"
+        android:gravity="center"
+        android:text="@string/login"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/getCode"
+        android:layout_width="200dp"
+        android:layout_height="60dp"
+        android:layout_below="@+id/heart"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        android:textColor="@color/white"
+        android:background="@drawable/save_now_bg"
+        android:text="get Code"
+        android:textSize="20sp" />
+
+</RelativeLayout>
