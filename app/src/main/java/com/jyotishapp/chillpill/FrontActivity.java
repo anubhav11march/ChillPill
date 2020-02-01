@@ -77,6 +77,8 @@ public class FrontActivity extends AppCompatActivity implements TimePickerDialog
         setContentView(R.layout.activity_front);
         getSupportActionBar().hide();
 
+        mess = FirebaseAuth.getInstance().getUid() ;
+
         DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference().child("Patient").child(FirebaseAuth.getInstance().getUid()).child("Medicines");
 
         databaseReference.addValueEventListener(new ValueEventListener() {
@@ -217,7 +219,7 @@ public class FrontActivity extends AppCompatActivity implements TimePickerDialog
                         Barcode barcode = data.getParcelableExtra(BarcodeCaptureActivity.BarcodeObject);
                         Point[] p =barcode.cornerPoints;
                         Toast.makeText(FrontActivity.this, barcode.displayValue, Toast.LENGTH_SHORT).show();
-                        TOPIC = barcode.displayValue ;
+                        TOPIC = barcode.displayValue ; //topic must match with what the receiver subscribed to
                         Log.e("TOPIC", TOPIC );
                         Log.e("DBREF", TOPIC);
                         String NOTIFICATION_TITLE = "Notification Trial";
@@ -273,5 +275,6 @@ public class FrontActivity extends AppCompatActivity implements TimePickerDialog
                 return params;
             }
         };
+        MySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjectRequest);
     }
 }
