@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "870444139737-brpn6td76jscltg6mpls5j2078picnq1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jyotishapp.chillpill",
+            "certificate_hash": "5ec3edddcc979cd3e6af610929396fcb27fefd9f"
+          }
+        },
+        {
           "client_id": "870444139737-7o3mveqf8cp1jacdrotvgt2abrr5i5ro.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

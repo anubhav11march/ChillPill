@@ -5,6 +5,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -47,7 +49,8 @@ public class EmergencyActivity extends AppCompatActivity {
     static {
         AzureMaps.setSubscriptionKey("IriRm8tu9TLUJIdNj1Wo126lzi9aKHcVk2TG24ABP4s ");
     }
-
+    TextView txt ;
+    String sbc;
     private RequestQueue mQueue ;
     static String urlGetHosp = "https://atlas.microsoft.com/search/poi/json?subscription-key=IriRm8tu9TLUJIdNj1Wo126lzi9aKHcVk2TG24ABP4s &api-version=1.0&query=hospital&limit=10&lat="+"&lon="+"&radius=10000" ;
     static String urlDistance = "https://atlas.microsoft.com/route/directions/json?subscription-key=IriRm8tu9TLUJIdNj1Wo126lzi9aKHcVk2TG24ABP4s &api-version=1.0&query="+"," + ":" + "," + "" ;
@@ -63,6 +66,7 @@ public class EmergencyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_emergency);
         getSupportActionBar().hide();
 
+        txt = findViewById(R.id.hosTXT);
         mapControl = findViewById(R.id.mapcontrol);
 
         mapControl.onCreate(savedInstanceState);
@@ -95,6 +99,7 @@ public class EmergencyActivity extends AppCompatActivity {
 
             urlGetHosp = "https://atlas.microsoft.com/search/poi/json?subscription-key=IriRm8tu9TLUJIdNj1Wo126lzi9aKHcVk2TG24ABP4s&api-version=1.0&query=hospital&limit=5&lat="
                     +loc.getLatitude()+"&lon="+loc.getLongitude()+"&radius=10000" ;
+            Log.e("TMKOC", urlGetHosp );
 
             mQueue = Volley.newRequestQueue(this) ;
             JsonObjectRequest request123 = new JsonObjectRequest(Request.Method.GET, urlGetHosp, null,
@@ -148,7 +153,9 @@ public class EmergencyActivity extends AppCompatActivity {
                                     }
                                 }
                                 Log.e("HOSPIS", min + " " + hospitals.get(idx).getName() );
-                                Adapter fin = new Adapter(hospitals.get(0).getName(),hospitals.get(0).getLoc(),hospitals.get(0).getPhone());
+                                Adapter fin = new Adapter(hospitals.get(idx).getName(),hospitals.get(idx).getLoc(),hospitals.get(idx).getPhone());
+                                sbc = hospitals.get(idx).getName();
+                                txt.setText(sbc + "");
 
 
                                 dataSource.add(Feature.fromGeometry(Point.fromLngLat(loc.getLongitude(), loc.getLatitude())));
@@ -156,7 +163,6 @@ public class EmergencyActivity extends AppCompatActivity {
                                 map.images.add("my-icon", R.drawable.mapcontrol_point_circle_blue_o);
 
                                 //Create a symbol layer and add it to the map.
-
 
                                 dataSource.add(Feature.fromGeometry(Point.fromLngLat(fin.loc.longitude(), fin.loc.latitude())));
 
@@ -191,7 +197,6 @@ public class EmergencyActivity extends AppCompatActivity {
                 }
             }) ;
             mQueue.add(request123);
-
 
 
         });
