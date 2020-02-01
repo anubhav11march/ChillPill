@@ -60,6 +60,7 @@ public class CameraActivity extends AppCompatActivity implements ActivityCompat.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
+        getSupportActionBar().hide();
 
         bool = getIntent().getBooleanExtra("IS_QR", true);
         //true - barcode
