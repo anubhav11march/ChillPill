@@ -45,8 +45,9 @@ public class LoginActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         if (auth.getCurrentUser() != null) {
-            startActivity(new Intent(this, MainActivity.class));
+            startActivity(new Intent(this, FrontActivity.class));
             finish();
+            return;
         }
 
         imageView = findViewById(R.id.image_view);

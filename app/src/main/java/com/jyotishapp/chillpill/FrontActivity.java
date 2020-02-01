@@ -48,6 +48,7 @@ public class FrontActivity extends AppCompatActivity implements TimePickerDialog
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_front);
+        getSupportActionBar().hide();
 
         DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference().child("Patient").child(FirebaseAuth.getInstance().getUid()).child("Medicines");
 
