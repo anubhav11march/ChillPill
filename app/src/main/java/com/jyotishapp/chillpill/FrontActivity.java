@@ -1,6 +1,7 @@
 package com.jyotishapp.chillpill;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
@@ -13,6 +14,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.provider.AlarmClock;
 import android.util.Log;
@@ -20,8 +22,11 @@ import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.google.android.gms.common.api.CommonStatusCodes;
+import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -36,6 +41,7 @@ public class FrontActivity extends AppCompatActivity implements TimePickerDialog
     long cu, cene;
     int counter = 1;
     static TextView txt ;
+    int BARCODE_READER = 1;
 
     TextView signOut;
     FloatingActionButton fab, fab1, fab2, fab3;
@@ -118,9 +124,9 @@ public class FrontActivity extends AppCompatActivity implements TimePickerDialog
             @Override
             public void onClick(View view) {
             //qr activity
-            Intent i = new Intent(FrontActivity.this, CameraActivity.class);
-            i.putExtra("IS_QR", true);
-            startActivity(i);
+            Intent i = new Intent(FrontActivity.this, BarcodeCaptureActivity.class);
+            startActivityForResult(i, BARCODE_READER);
+
         }});
         fab2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -184,5 +190,27 @@ public class FrontActivity extends AppCompatActivity implements TimePickerDialog
         intent.putExtra(AlarmClock.EXTRA_HOUR, hour);
         intent.putExtra(AlarmClock.EXTRA_MINUTES, minute);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+            if(requestCode == BARCODE_READER){
+                if(resultCode == CommonStatusCodes.SUCCESS){
+                    if(data != null){
+                        Barcode barcode = data.getParcelableExtra(BarcodeCaptureActivity.BarcodeObject);
+                        Point[] p =barcode.cornerPoints;
+                        Toast.makeText(FrontActivity.this, barcode.displayValue, Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        Toast.makeText(FrontActivity.this, "Barcode Scan Failed", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else
+                    Log.v("AAA", CommonStatusCodes.getStatusCodeString(resultCode));
+            }
+            else {
+                super.onActivityResult(requestCode, resultCode, data);
+            }
     }
 }

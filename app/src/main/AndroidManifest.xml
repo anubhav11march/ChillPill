@@ -17,7 +17,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".MedicineActivity"></activity>
+        <activity android:name=".BarcodeCaptureActivity"></activity>
+        <activity android:name=".MedicineActivity" />
         <activity android:name=".BarcodeActivity" />
         <activity android:name=".CameraActivity" />
         <activity android:name=".DetailsActivity" />
