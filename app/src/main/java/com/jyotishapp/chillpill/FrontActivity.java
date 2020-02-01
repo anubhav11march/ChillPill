@@ -25,6 +25,10 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -36,12 +40,24 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class FrontActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener{
     private static final String TAG = "TAG";
     long cu, cene;
     int counter = 1;
     static TextView txt ;
     int BARCODE_READER = 1;
+
+    final private String FCM_API = "https://fcm.googleapis.com/fcm/send";
+    final private String serverKey = "key=" + "AAAAyqqDhNk:APA91bFzMXH66vRN_SU41gEsDVgnNkIu6zq3hgY9SljqoRtf1D3oOSRS28BijHf829jq-y0wOCnzpPEpO7MvzLTB6NIgW5mFLG65RLg6irMYeA-Hi6SzGMbxRMPsnJMpmq39t9RT3UqO";
+    final private String contentType = "application/json";
+    String mess ;
+    String TOPIC ;
 
     TextView signOut;
     FloatingActionButton fab, fab1, fab2, fab3;
@@ -201,6 +217,26 @@ public class FrontActivity extends AppCompatActivity implements TimePickerDialog
                         Barcode barcode = data.getParcelableExtra(BarcodeCaptureActivity.BarcodeObject);
                         Point[] p =barcode.cornerPoints;
                         Toast.makeText(FrontActivity.this, barcode.displayValue, Toast.LENGTH_SHORT).show();
+                        TOPIC = barcode.displayValue ;
+                        Log.e("TOPIC", TOPIC );
+                        Log.e("DBREF", TOPIC);
+                        String NOTIFICATION_TITLE = "Notification Trial";
+
+                        String NOTIFICATION_MESSAGE = mess ;
+                        Toast.makeText(getApplicationContext() ,"Notification Sent",Toast.LENGTH_LONG).show();
+                        JSONObject notification = new JSONObject();
+                        JSONObject notifcationBody = new JSONObject();
+                        try {
+                            notifcationBody.put("title", NOTIFICATION_TITLE);
+                            notifcationBody.put("message", NOTIFICATION_MESSAGE);
+
+                            notification.put("to", TOPIC);
+                            notification.put("data", notifcationBody);
+                        } catch (JSONException e) {
+                            Log.e("FCM", "onCreate: " + e.getMessage() );
+                        }
+                        Log.e("Hello", notification.toString() );
+                        sendNotification(notification);
                     }
                     else {
                         Toast.makeText(FrontActivity.this, "Barcode Scan Failed", Toast.LENGTH_SHORT).show();
@@ -212,5 +248,30 @@ public class FrontActivity extends AppCompatActivity implements TimePickerDialog
             else {
                 super.onActivityResult(requestCode, resultCode, data);
             }
+    }
+
+    private void sendNotification(JSONObject notification) {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(FCM_API, notification,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.i("FCM", "onResponse: " + response.toString());
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext() , "Request error", Toast.LENGTH_LONG).show();
+                        Log.i("FCM", "onErrorResponse: Didn't work");
+                    }
+                }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("Authorization", serverKey);
+                params.put("Content-Type", contentType);
+                return params;
+            }
+        };
     }
 }
