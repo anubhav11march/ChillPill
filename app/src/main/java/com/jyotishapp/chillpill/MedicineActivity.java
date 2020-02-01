@@ -57,7 +57,7 @@ public class MedicineActivity extends AppCompatActivity {
         FirebaseModelDownloadConditions conditions = new FirebaseModelDownloadConditions.Builder()
                 .requireWifi()
                 .build();
-        FirebaseRemoteModel remoteModel = new FirebaseRemoteModel.Builder("Medicine")
+        FirebaseRemoteModel remoteModel = new FirebaseRemoteModel.Builder("Med")
                 .enableModelUpdates(true)
                 .setInitialDownloadConditions(conditions)
                 .setUpdatesDownloadConditions(conditions)
@@ -74,7 +74,7 @@ public class MedicineActivity extends AppCompatActivity {
         FirebaseVisionOnDeviceAutoMLImageLabelerOptions labelerOptions =
                 new FirebaseVisionOnDeviceAutoMLImageLabelerOptions.Builder()
                         .setLocalModelName("model")    // Skip to not use a local model
-                        .setRemoteModelName("Medicine")  // Skip to not use a remote model
+                        .setRemoteModelName("Med")  // Skip to not use a remote model
                         .setConfidenceThreshold(0)  // Evaluate your model in the Firebase console
                         // to determine an appropriate value.
                         .build();
