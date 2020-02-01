@@ -176,7 +176,7 @@ public class CameraActivity extends AppCompatActivity implements ActivityCompat.
                 public void run() {
                     Intent fp ;
                     if (bool)
-                        fp=new Intent(getApplicationContext(),Barcode.class);
+                        fp=new Intent(getApplicationContext(), BarcodeActivity.class);
                     else
                         fp=new Intent(getApplicationContext(),Medicine.class);
                     startActivity(fp,
