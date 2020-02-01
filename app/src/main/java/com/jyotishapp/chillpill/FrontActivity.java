@@ -3,12 +3,16 @@ package com.jyotishapp.chillpill;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.provider.AlarmClock;
 import android.util.Log;
@@ -42,6 +46,7 @@ public class FrontActivity extends AppCompatActivity implements TimePickerDialog
     RecyclerView recycler_view;
     FirebaseAuth auth;
     DatabaseReference my_ref;
+    int REQUEST_LOCATION_PERMISSION = 1;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -160,6 +165,16 @@ public class FrontActivity extends AppCompatActivity implements TimePickerDialog
         Intent intent = new Intent(AlarmClock.ACTION_SET_ALARM);
         intent.putExtra(AlarmClock.EXTRA_HOUR, hour);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);
+        }
     }
 
     @Override
