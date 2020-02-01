@@ -178,7 +178,7 @@ public class CameraActivity extends AppCompatActivity implements ActivityCompat.
                     if (bool)
                         fp=new Intent(getApplicationContext(), BarcodeActivity.class);
                     else
-                        fp=new Intent(getApplicationContext(),Medicine.class);
+                        fp=new Intent(getApplicationContext(), MedicineActivity.class);
                     startActivity(fp,
                             ActivityOptions.makeSceneTransitionAnimation(CameraActivity.this).toBundle());
                     finish();
