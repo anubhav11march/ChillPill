@@ -20,9 +20,12 @@ import android.os.Bundle;
 import android.provider.AlarmClock;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -61,6 +64,7 @@ public class FrontActivity extends AppCompatActivity implements TimePickerDialog
     static TextView txt ;
     int BARCODE_READER = 1;
     ScrollView rvContainer;
+    ImageView menuOpen;
 
     TextView signOut, med_left, appointment;
     static int version ;
@@ -93,6 +97,7 @@ public class FrontActivity extends AppCompatActivity implements TimePickerDialog
         medList = (RecyclerView) findViewById(R.id.med_list);
         medList.setLayoutManager(new LinearLayoutManager(this));
         rvContainer = (ScrollView) findViewById(R.id.rvContainer);
+        menuOpen = (ImageView) findViewById(R.id.menuOpen);
 
         Query query = FirebaseDatabase.getInstance().getReference()
                 .child("Patient").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Medicines");
@@ -220,6 +225,26 @@ public class FrontActivity extends AppCompatActivity implements TimePickerDialog
                     counter = 1;
                 }
                 cene = cu;
+            }
+        });
+
+        menuOpen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupMenu popupMenu = new PopupMenu(FrontActivity.this, view);
+                popupMenu.getMenuInflater().inflate(R.menu.doc_menu, popupMenu.getMenu());
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        switch (menuItem.getItemId()){
+                            case R.id.doc:
+                                startActivity(new Intent(FrontActivity.this, DocActivity.class));
+                                break;
+                        }
+                        return true;
+                    }
+                });
+                popupMenu.show();
             }
         });
 

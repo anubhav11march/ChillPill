@@ -17,7 +17,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".BarcodeCaptureActivity"></activity>
+        <activity android:name=".DocActivity" android:parentActivityName=".FrontActivity"></activity>
+        <activity android:name=".BarcodeCaptureActivity" />
         <activity android:name=".MedicineActivity" />
         <activity android:name=".BarcodeActivity" />
         <activity android:name=".CameraActivity" />
@@ -41,7 +42,6 @@
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
         </service>
-
     </application>
 
 </manifest>

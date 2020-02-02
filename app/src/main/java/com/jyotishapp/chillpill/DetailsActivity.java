@@ -115,7 +115,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         //personal ref
         DatabaseReference personal_ref = FirebaseDatabase.getInstance().getReference().child("Patient")
-                .child(FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber()).child("Personal Info");
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Personal Info");
         personal_ref.child("Name").setValue(name.getEditText().getText().toString().trim());
         personal_ref.child("Age").setValue(age.getEditText().getText().toString().trim());
         personal_ref.child("Male").setValue(GENDER);
