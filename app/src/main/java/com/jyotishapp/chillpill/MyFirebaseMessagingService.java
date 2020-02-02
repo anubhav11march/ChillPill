@@ -38,7 +38,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
             CharSequence adminChannelName = "New notification";
-            String adminChannelDescription = "Device to devie notification";
+            String adminChannelDescription = "Device to device notification";
 
             NotificationChannel adminChannel;
             adminChannel = new NotificationChannel(ADMIN_CHANNEL_ID, adminChannelName, NotificationManager.IMPORTANCE_HIGH);

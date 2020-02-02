@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
@@ -18,8 +19,11 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.provider.AlarmClock;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -29,6 +33,8 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -37,11 +43,13 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -52,9 +60,11 @@ public class FrontActivity extends AppCompatActivity implements TimePickerDialog
     int counter = 1;
     static TextView txt ;
     int BARCODE_READER = 1;
+    ScrollView rvContainer;
 
     TextView signOut, med_left, appointment;
     static int version ;
+    RecyclerView medList;
 
     final private String FCM_API = "https://fcm.googleapis.com/fcm/send";
     final private String serverKey = "key=" + "AAAAyqqDhNk:APA91bFzMXH66vRN_SU41gEsDVgnNkIu6zq3hgY9SljqoRtf1D3oOSRS28BijHf829jq-y0wOCnzpPEpO7MvzLTB6NIgW5mFLG65RLg6irMYeA-Hi6SzGMbxRMPsnJMpmq39t9RT3UqO";
@@ -80,6 +90,14 @@ public class FrontActivity extends AppCompatActivity implements TimePickerDialog
         getSupportActionBar().hide();
         med_left = (TextView) findViewById(R.id.med_left);
         appointment = (TextView) findViewById(R.id.appointment);
+        medList = (RecyclerView) findViewById(R.id.med_list);
+        medList.setLayoutManager(new LinearLayoutManager(this));
+        rvContainer = (ScrollView) findViewById(R.id.rvContainer);
+
+        Query query = FirebaseDatabase.getInstance().getReference()
+                .child("Patient").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Medicines");
+
+        inflateRecyclerView(query);
 
         DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference().child("Patient").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
         Toast.makeText(FrontActivity.this, FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber(), Toast.LENGTH_SHORT).show();
@@ -188,6 +206,23 @@ public class FrontActivity extends AppCompatActivity implements TimePickerDialog
                 cene = cu;
             }});
 
+        rvContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cu = System.currentTimeMillis();
+                if (counter == 5) {
+                    startActivity(new Intent(getApplicationContext(), EmergencyActivity.class));
+                    counter = 1;
+                } else if (counter == 1 || cu < cene + 500) {
+                    Log.e("Emergency Counter ", counter + " ");
+                    counter++;
+                } else {
+                    counter = 1;
+                }
+                cene = cu;
+            }
+        });
+
         FirebaseAuth auth = FirebaseAuth.getInstance();
         my_ref = FirebaseDatabase.getInstance().getReference().child("Patient")
                 .child(auth.getCurrentUser().getUid()).child("Medicines");
@@ -208,6 +243,64 @@ public class FrontActivity extends AppCompatActivity implements TimePickerDialog
         } else {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);
         }
+    }
+
+    public void inflateRecyclerView(Query query){
+        FirebaseRecyclerOptions<Medicines> options = new FirebaseRecyclerOptions.Builder<Medicines>()
+                .setQuery(query, Medicines.class)
+                .build();
+
+        FirebaseRecyclerAdapter FBRA = new FirebaseRecyclerAdapter<Medicines, MedicinesViewHolder>(options) {
+            @Override
+            protected void onBindViewHolder(@NonNull MedicinesViewHolder holder, int position, @NonNull Medicines model) {
+                String data = model.getMedicine();
+                String routine = (char)data.charAt(0) +""+ (char)data.charAt(2) +"" +(char) data.charAt(4) +"";
+                String medName = data.substring(6);
+                holder.setRoutine(routine);
+                holder.setMedName(medName);
+                load.setVisibility(View.GONE);
+            }
+
+            @NonNull
+            @Override
+            public MedicinesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                return new MedicinesViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.med_card, parent, false));
+            }
+        };
+        FBRA.startListening();
+        medList.setAdapter(FBRA);
+    }
+
+    class MedicinesViewHolder extends RecyclerView.ViewHolder{
+        View mView;
+        MedicinesViewHolder(@NonNull View itemView){
+            super(itemView);
+            mView = itemView;
+        }
+
+        public void setMedName(String medName){
+            TextView medNameT = (TextView) mView.findViewById(R.id.medName);
+            medNameT.setText(medName);
+        }
+
+        public void setRoutine(String routine){
+            TextView mornT = (TextView) mView.findViewById(R.id.morn);
+            TextView noonT = (TextView) mView.findViewById(R.id.noon);
+            TextView nightT = (TextView) mView.findViewById(R.id.night);
+            if (routine.charAt(0) == 'X')
+                mornT.setText("Morning");
+            else
+                mornT.setText("     ");
+            if (routine.charAt(1) == 'X')
+                noonT.setText("Afternoon");
+            else
+                noonT.setText("     ");
+            if (routine.charAt(2) == 'X')
+                nightT.setText("Night");
+            else
+                nightT.setText("     ");
+        }
+
     }
 
     @Override
@@ -286,4 +379,5 @@ public class FrontActivity extends AppCompatActivity implements TimePickerDialog
         };
         MySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjectRequest);
     }
+
 }
