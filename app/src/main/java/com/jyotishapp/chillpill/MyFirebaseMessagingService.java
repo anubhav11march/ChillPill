@@ -61,7 +61,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         Uri notificationSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, ADMIN_CHANNEL_ID)
-                .setSmallIcon(R.drawable.icon)
+                .setSmallIcon(R.drawable.googleg_standard_color_18)
                 .setLargeIcon(largeIcon)
                 .setContentTitle(remoteMessage.getData().get("title"))
                 .setContentText("Doctor has updated your Medicine")
