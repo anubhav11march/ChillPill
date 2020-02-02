@@ -81,7 +81,7 @@ public class FrontActivity extends AppCompatActivity implements TimePickerDialog
         med_left = (TextView) findViewById(R.id.med_left);
         appointment = (TextView) findViewById(R.id.appointment);
 
-        DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference().child("Patient").child(FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber());
+        DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference().child("Patient").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
         Toast.makeText(FrontActivity.this, FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber(), Toast.LENGTH_SHORT).show();
         mess = FirebaseAuth.getInstance().getUid() ;
         databaseReference.addValueEventListener(new ValueEventListener() {
