@@ -53,6 +53,7 @@ public class FrontActivity extends AppCompatActivity implements TimePickerDialog
     static TextView txt ;
     int BARCODE_READER = 1;
 
+    TextView signOut, med_left, appointment;
     static int version ;
 
     final private String FCM_API = "https://fcm.googleapis.com/fcm/send";
@@ -61,7 +62,6 @@ public class FrontActivity extends AppCompatActivity implements TimePickerDialog
     String mess ;
     String TOPIC ;
 
-    TextView signOut;
     FloatingActionButton fab, fab1, fab2, fab3;
     boolean hidden = true;
 
@@ -78,20 +78,23 @@ public class FrontActivity extends AppCompatActivity implements TimePickerDialog
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_front);
         getSupportActionBar().hide();
+        med_left = (TextView) findViewById(R.id.med_left);
+        appointment = (TextView) findViewById(R.id.appointment);
 
+        DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference().child("Patient").child(FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber());
+        Toast.makeText(FrontActivity.this, FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber(), Toast.LENGTH_SHORT).show();
         mess = FirebaseAuth.getInstance().getUid() ;
-
-        DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference().child("Patient").child(FirebaseAuth.getInstance().getUid()).child("Medicines");
-
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                txt.setText(dataSnapshot.toString());
+                appointment.setText(dataSnapshot.child("Appointments").child("Date").getValue().toString());
+                med_left.setText(dataSnapshot.child("Medicines").getChildrenCount()+"");
+//                txt.setText(dataSnapshot.toString());
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                    int x=0;
             }
         }) ;
 

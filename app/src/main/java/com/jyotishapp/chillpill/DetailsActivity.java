@@ -114,11 +114,18 @@ public class DetailsActivity extends AppCompatActivity {
     private void saveData() {
 
         //personal ref
-        DatabaseReference personal_ref = ref.child(PERSONAL_INFO);
-        personal_ref.child(NAME).setValue(name.getEditText().getText().toString().trim());
-        personal_ref.child(AGE).setValue(age.getEditText().getText().toString().trim());
+        DatabaseReference personal_ref = FirebaseDatabase.getInstance().getReference().child("Patient")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber()).child("Personal Info");
+        personal_ref.child("Name").setValue(name.getEditText().getText().toString().trim());
+        personal_ref.child("Age").setValue(age.getEditText().getText().toString().trim());
+        personal_ref.child("Male").setValue(GENDER);
 
-        personal_ref.child(DetailsActivity.GENDER).setValue(IS_MALE);
+//        personal_ref.child(NAME).setValue();
+//        personal_ref.child(AGE).setValue(age.getEditText().getText().toString().trim());
+//
+//
+//
+//        personal_ref.child(DetailsActivity.GENDER).setValue(IS_MALE);
 
         //past reports reference
         DatabaseReference past_rep = ref.child(PAST_REP);
