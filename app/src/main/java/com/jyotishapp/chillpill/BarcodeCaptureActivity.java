@@ -49,6 +49,8 @@ public class BarcodeCaptureActivity extends AppCompatActivity implements Barcode
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_barcode_capture);
         mPreview = (CameraSourcePreview) findViewById(R.id.preview);
+        getSupportActionBar().hide();
+
 
         boolean autoFocus = true;
         boolean useFlash = false;
