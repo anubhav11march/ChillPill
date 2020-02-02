@@ -53,6 +53,8 @@ public class FrontActivity extends AppCompatActivity implements TimePickerDialog
     static TextView txt ;
     int BARCODE_READER = 1;
 
+    static int version ;
+
     final private String FCM_API = "https://fcm.googleapis.com/fcm/send";
     final private String serverKey = "key=" + "AAAAyqqDhNk:APA91bFzMXH66vRN_SU41gEsDVgnNkIu6zq3hgY9SljqoRtf1D3oOSRS28BijHf829jq-y0wOCnzpPEpO7MvzLTB6NIgW5mFLG65RLg6irMYeA-Hi6SzGMbxRMPsnJMpmq39t9RT3UqO";
     final private String contentType = "application/json";
