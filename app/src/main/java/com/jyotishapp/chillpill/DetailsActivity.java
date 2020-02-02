@@ -137,7 +137,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         //appointments reference
         DatabaseReference appoint_ref = ref.child(APPOINTMENTS);
-        appoint_ref.child("Date").setValue("null");
+        appoint_ref.child("Date").setValue("None");
         appoint_ref.child("Remarks").setValue("null");
 
     }

@@ -87,7 +87,11 @@ public class FrontActivity extends AppCompatActivity implements TimePickerDialog
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                appointment.setText(dataSnapshot.child("Appointments").child("Date").getValue().toString());
+                if (dataSnapshot.child("Appointments").child("Date").getValue() != null )
+                    appointment.setText(dataSnapshot.child("Appointments").child("Date").getValue().toString());
+                else
+                    appointment.setText("None");
+
                 med_left.setText(dataSnapshot.child("Medicines").getChildrenCount()+"");
 //                txt.setText(dataSnapshot.toString());
             }
