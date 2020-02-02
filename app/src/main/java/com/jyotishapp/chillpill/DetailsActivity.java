@@ -30,8 +30,8 @@ public class DetailsActivity extends AppCompatActivity {
     public static final String AGE = "Age";
     public static final String GENDER = "Gender";
 
-    public static final String PERSONAL_INFO = "Personal_Info";
-    public static final String PAST_REP = "Reports";
+    public static final String PERSONAL_INFO = "Personal Info";
+    public static final String PAST_REP = "Past Reports";
     public static final String MEDICINES = "Medicines";
     public static final String APPOINTMENTS = "Appointments";
 
@@ -126,7 +126,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         //medicines ref
         DatabaseReference med_ref = ref.child(MEDICINES);
-        med_ref.child("null").setValue("0-0-0-0");
+        med_ref.child("null").setValue("0-0-0");
 
         //appointments reference
         DatabaseReference appoint_ref = ref.child(APPOINTMENTS);
