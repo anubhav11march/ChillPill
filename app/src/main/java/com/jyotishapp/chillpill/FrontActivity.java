@@ -313,15 +313,15 @@ public class FrontActivity extends AppCompatActivity implements TimePickerDialog
             TextView noonT = (TextView) mView.findViewById(R.id.noon);
             TextView nightT = (TextView) mView.findViewById(R.id.night);
             if (routine.charAt(0) == 'X')
-                mornT.setText("Morning");
+                mornT.setText("Morning (✓)");
             else
                 mornT.setText("     ");
             if (routine.charAt(1) == 'X')
-                noonT.setText("Afternoon");
+                noonT.setText("Afternoon (✓)");
             else
                 noonT.setText("     ");
             if (routine.charAt(2) == 'X')
-                nightT.setText("Night");
+                nightT.setText("Night (✓)");
             else
                 nightT.setText("     ");
         }
