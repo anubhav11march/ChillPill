@@ -133,7 +133,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         //medicines ref
         DatabaseReference med_ref = ref.child(MEDICINES);
-        med_ref.child("null").setValue("0-0-0");
+        med_ref.child("0").child("medicine").setValue("0-0-0-Medicines");
 
         //appointments reference
         DatabaseReference appoint_ref = ref.child(APPOINTMENTS);
